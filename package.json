@@ -1,0 +1,20 @@
+{
+  "name": "code-connect",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@11.24.0",
+  "scripts": {
+    "web": "npx pnpm --dir apps/web",
+    "api": "npx pnpm --dir apps/api",
+    "web:dev": "npx pnpm --dir apps/web dev --host 0.0.0.0",
+    "web:build": "npx pnpm --dir apps/web build",
+    "web:preview": "npx pnpm --dir apps/web preview --host 0.0.0.0",
+    "api:dev": "npx pnpm --dir apps/api start:dev",
+    "api:build": "npx pnpm --dir apps/api build",
+    "api:start": "npx pnpm --dir apps/api start",
+    "dev": "concurrently \"npm run web:dev\" \"npm run api:dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4"
+  }
+}

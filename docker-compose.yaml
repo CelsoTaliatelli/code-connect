@@ -1,0 +1,13 @@
+services:
+  app:
+    image: node:22
+    container_name: node22_app
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+    command: sh -c "tail -f /dev/null"
