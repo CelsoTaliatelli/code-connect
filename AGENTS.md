@@ -30,6 +30,13 @@ This repo is a pnpm monorepo with two apps:
 - Code lives under [apps/web/src](apps/web/src).
 - Default stack is React + Vite; keep components, styles, and assets local to the web app.
 - Prefer small, component-oriented changes and keep state management simple unless the feature clearly requires a larger pattern.
+- Follow atomic design principles: keep the UI organized in `atoms`, `molecules`, `organisms`, `templates`, and `pages`.
+- Build interfaces by composing smaller pieces instead of creating large monolithic components.
+- Use Tailwind CSS for styling and prefer utility-first classes over custom CSS unless there is a justified design-system need.
+- Keep component responsibilities focused and avoid adding business logic to purely presentational components.
+- Every component must include a test covering its essential behavior: rendering, user interaction, validation, or a critical state change.
+- Prioritize behavioral assertions over snapshots or implementation details.
+- Place tests next to the component or in a matching test folder structure, and keep them focused on the component's main contract.
 
 ### Backend
 
@@ -37,6 +44,26 @@ This repo is a pnpm monorepo with two apps:
 - Follow NestJS module/controller/service patterns for new features.
 - The app is ESM-based and imports internal TypeScript modules using `.js` file extensions in some places, so preserve the project’s existing import style.
 - Tests are under [apps/api/test](apps/api/test) and run with Vitest.
+- Design the API to follow REST principles consistently: use resources as nouns, stable resource URIs, and HTTP methods for the intended action.
+- Use nouns and pluralized resource names in routes, for example `/users`, `/projects`, `/users/:id`.
+- Keep endpoints stateless and ensure each request carries the information needed to process it.
+- Use the proper HTTP semantics for CRUD operations: GET for retrieval, POST for creation, PUT/PATCH for updates, and DELETE for removal.
+- Return standard HTTP status codes and use them consistently for success, validation failures, not found, and server errors.
+- Keep response payloads consistent and predictable; avoid mixing different data shapes for the same resource.
+- Prefer clear resource-based naming over action-based routes such as `/createUser` or `/deleteUser`.
+- Use validation and error handling at boundaries, with meaningful messages and consistent response contracts.
+- Keep controllers focused on HTTP concerns, and push business logic into services.
+- Prefer idempotent behavior when appropriate and avoid side effects in GET requests.
+
+### Git and commit conventions
+
+- Use Conventional Commits for all changes in both frontend and backend.
+- Follow the pattern: `type(scope): subject`.
+- Recommended types include `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `style`, and `perf`.
+- Scope should be narrow and meaningful, such as `web`, `api`, `auth`, `users`, `ui`, or `api-users`.
+- Use clear, imperative subjects in the present tense, for example: `feat(web): add user card component`.
+- Keep commits focused on one task or concern; avoid mixing unrelated changes in the same commit.
+- Prefer descriptive messages that explain the intent of the change, not just the files modified.
 
 ## Validation
 
