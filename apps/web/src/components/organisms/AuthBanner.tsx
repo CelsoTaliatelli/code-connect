@@ -1,12 +1,13 @@
 type AuthBannerProps = {
   title: string
   description: string
+  imageSrc?: string
 }
 
-export function AuthBanner({ title, description }: AuthBannerProps) {
+export function AuthBanner({ title, description, imageSrc }: AuthBannerProps) {
   return (
     <aside className="auth-banner" aria-label="Banner de apresentação">
-      <img src="/Banner do Login.png" alt="Banner de login" />
+      <img src={imageSrc ?? '/Banner do Login.png'} alt="Banner de login" />
 
       <div className="banner-overlay">
         <span className="banner-badge">Welcome</span>

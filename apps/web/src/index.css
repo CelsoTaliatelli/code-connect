@@ -1,21 +1,37 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
+  --color-graphite: #00090e;
+  --color-dark-gray: #171d1f;
+  --color-petrol-green: #132e35;
+  --color-offwhite: #e1e1e1;
+  --color-medium-gray: #888888;
+  --color-highlight: #81fe88;
+  --color-input-bg: #132e35;
+  --color-input-text: #e1e1e1;
+
+  --text: var(--color-offwhite);
+  --text-h: var(--color-offwhite);
+  --bg: var(--color-graphite);
+  --border: rgba(225, 225, 225, 0.16);
+  --code-bg: var(--color-dark-gray);
+  --accent: var(--color-highlight);
+  --accent-bg: rgba(129, 254, 136, 0.1);
+  --accent-border: rgba(129, 254, 136, 0.5);
+  --social-bg: rgba(23, 29, 31, 0.5);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Prompt', ui-sans-serif, system-ui, sans-serif;
+  --heading: 'Prompt', ui-sans-serif, system-ui, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-3xl: 1.875rem;
+
+  font: var(--font-size-lg)/145% var(--sans);
   letter-spacing: 0.18px;
   color-scheme: light dark;
   color: var(--text);
@@ -26,35 +42,15 @@
   -moz-osx-font-smoothing: grayscale;
 
   @media (max-width: 1024px) {
-    font-size: 16px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+    font-size: var(--font-size-base);
   }
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  background: #071818;
-  font-family: Inter, 'Segoe UI', sans-serif;
+  background: var(--color-graphite);
+  font-family: var(--sans);
 }
 
 #root {
@@ -76,21 +72,21 @@ h2 {
 }
 
 h1 {
-  font-size: 56px;
+  font-size: var(--font-size-3xl);
   letter-spacing: -1.68px;
   margin: 32px 0;
   @media (max-width: 1024px) {
-    font-size: 36px;
+    font-size: var(--font-size-3xl);
     margin: 20px 0;
   }
 }
 h2 {
-  font-size: 24px;
+  font-size: var(--font-size-xl);
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
   @media (max-width: 1024px) {
-    font-size: 20px;
+    font-size: var(--font-size-xl);
   }
 }
 p {
@@ -106,7 +102,7 @@ code,
 }
 
 code {
-  font-size: 15px;
+  font-size: var(--font-size-sm);
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
