@@ -33,6 +33,12 @@ This repo is a pnpm monorepo with two apps:
 - Follow atomic design principles: keep the UI organized in `atoms`, `molecules`, `organisms`, `templates`, and `pages`.
 - Build interfaces by composing smaller pieces instead of creating large monolithic components.
 - Use Tailwind CSS for styling and prefer utility-first classes over custom CSS unless there is a justified design-system need.
+- Use the shared Tailwind theme tokens for colors and typography instead of introducing one-off values in components.
+- Keep the project palette centralized in `apps/web/tailwind.config.cjs`: `graphite`, `dark-gray`, `petrol-green`, `offwhite`, `medium-gray`, and `highlight`.
+- Prefer named palette tokens such as `text-offwhite` and `bg-graphite`; avoid raw hexadecimal colors in JSX, component styles, or feature CSS. Raw hex values belong in the theme configuration or global token definitions only.
+- Use Tailwind's closest standard font-size token (`text-xs`, `text-sm`, `text-base`, `text-lg`, `text-xl`, `text-3xl`, and similar) instead of arbitrary pixel values. Add a new size token only when the design system genuinely requires it.
+- When CSS is required for an existing component, consume the shared variables from `apps/web/src/index.css` rather than duplicating colors or font-size values.
+- Preserve the same color and type tokens across responsive states; responsive overrides should select an existing token rather than create a new custom size.
 - Keep component responsibilities focused and avoid adding business logic to purely presentational components.
 - Every component must include a test covering its essential behavior: rendering, user interaction, validation, or a critical state change.
 - Prioritize behavioral assertions over snapshots or implementation details.
