@@ -2,6 +2,7 @@
 node_modules/
 apps/*/node_modules/
 .pnpm-store/
+.docker/postgres/
 
 # Build / output
 /dist/

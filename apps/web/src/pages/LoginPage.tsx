@@ -1,8 +1,23 @@
 import { AuthBanner } from '../components/organisms/AuthBanner'
 import { AuthFormCard } from '../components/organisms/AuthFormCard'
 import { AuthLayout } from '../components/templates/AuthLayout'
+import { useAuth } from '../hooks/useAuth'
+
+function goTo(path: string) {
+  window.history.pushState({}, '', path)
+  window.dispatchEvent(new PopStateEvent('popstate'))
+}
 
 export function LoginPage() {
+  const { login, error, isSubmitting } = useAuth()
+
+  const handleSubmit = async (values: Record<string, string>) => {
+    try {
+      await login({ email: values.email, password: values.password })
+      goTo('/')
+    } catch {}
+  }
+
   return (
     <AuthLayout
       banner={
@@ -24,6 +39,9 @@ export function LoginPage() {
             { label: 'Senha', id: 'password', name: 'password', type: 'password', placeholder: '••••••••' },
           ]}
           bottomPrompt={{ leadingText: 'Ainda não tem conta?', linkText: 'Cadastre-se!', href: '/cadastro' }}
+          error={error}
+          isSubmitting={isSubmitting}
+          onSubmit={handleSubmit}
         />
       }
     />
