@@ -18,7 +18,14 @@ Na raiz do projeto, execute:
 docker compose up -d
 ```
 
-Isso inicia o container de desenvolvimento em Node 22.
+Isso inicia o container de desenvolvimento em Node 22 e o PostgreSQL. O banco fica disponível em `localhost:5432` e seus dados são persistidos em `.docker/postgres/`.
+
+Antes de iniciar a API pela primeira vez, aplique as migrations:
+
+```bash
+npm run api -- db:generate
+npm run api -- db:migrate:deploy
+```
 
 ## 2) 🧪 Acessar o container
 
@@ -100,3 +107,18 @@ npm run dev
 - Backend (NestJS): `http://localhost:3000`
 
 > O frontend pode ser ajustado conforme a configuração da aplicação, mas os scripts estão prontos para uso no ambiente Docker.
+
+## 🔐 Integração de autenticação
+
+O frontend usa `VITE_API_URL` para localizar a API e mantém o JWT em
+`localStorage`. A API aceita a origem definida em `FRONTEND_ORIGIN`, que por
+padrão é `http://localhost:5173`.
+
+Depois de subir o PostgreSQL, aplicar as migrations e iniciar a API, valide o
+fluxo contra os serviços reais com:
+
+```bash
+npm run web -- test:integration
+```
+
+Esse teste registra um usuário temporário, faz login e consulta `/auth/me`.

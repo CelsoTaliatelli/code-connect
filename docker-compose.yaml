@@ -1,4 +1,21 @@
 services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: code_connect_postgres
+    environment:
+      POSTGRES_DB: code_connect
+      POSTGRES_USER: code_connect
+      POSTGRES_PASSWORD: code_connect
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.docker/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U code_connect -d code_connect"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   app:
     image: node:22
     container_name: code_connect_apps
@@ -10,4 +27,8 @@ services:
       - "5173:5173"
     environment:
       - NODE_ENV=development
+      - DATABASE_URL=postgresql://code_connect:code_connect@postgres:5432/code_connect?schema=public
+    depends_on:
+      postgres:
+        condition: service_healthy
     command: sh -c "tail -f /dev/null"

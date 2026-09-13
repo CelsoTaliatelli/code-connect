@@ -23,13 +23,48 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+API NestJS com autenticação JWT e persistência PostgreSQL via Prisma.
+
+## Autenticação
+
+Endpoints disponíveis:
+
+- `POST /auth/register`: cadastra um usuário com `name`, `email` e `password`.
+- `POST /auth/login`: retorna `{ accessToken, tokenType }` para credenciais válidas.
+- `GET /auth/me`: retorna o usuário autenticado usando `Authorization: Bearer <token>`.
+
+O Swagger fica disponível em `http://localhost:3000/docs`.
+
+As senhas são armazenadas com Argon2 e nunca aparecem nas respostas. Os usuários são persistidos no PostgreSQL.
+
+Variáveis opcionais:
+
+- `PORT`: porta HTTP, padrão `3000`.
+- `JWT_SECRET`: segredo usado para assinar os tokens; em desenvolvimento, usa `development-secret` como fallback.
+- `DATABASE_URL`: URL de conexão do PostgreSQL. Veja `.env.example`.
 
 ## Project setup
 
 ```bash
 $ pnpm install
 ```
+
+## Banco de dados
+
+Suba o PostgreSQL na raiz do monorepo:
+
+```bash
+docker compose up -d postgres
+```
+
+Com `DATABASE_URL` configurada, gere o cliente e aplique as migrations:
+
+```bash
+pnpm run db:generate
+pnpm run db:migrate:deploy
+```
+
+No desenvolvimento, `pnpm run db:migrate` cria uma nova migration quando o schema mudar. Os dados locais ficam em `.docker/postgres/`, que não é versionado.
 
 ## Compile and run the project
 
