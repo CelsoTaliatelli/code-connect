@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react'
+import type { FormEvent, MouseEvent } from 'react'
 import { TextField } from '../atoms/TextField'
 import { AuthHeader } from '../molecules/AuthHeader'
 import { AuthSocialActions } from '../molecules/AuthSocialActions'
@@ -30,6 +30,9 @@ type AuthFormCardProps = {
     linkText: string
     href: string
   }
+  error?: string | null
+  isSubmitting?: boolean
+  onSubmit?: (values: Record<string, string>) => Promise<void>
 }
 
 export function AuthFormCard({
@@ -44,6 +47,9 @@ export function AuthFormCard({
   showTerms = false,
   footerLink,
   bottomPrompt,
+  error,
+  isSubmitting = false,
+  onSubmit,
 }: AuthFormCardProps) {
   const handleRouteClick = (event: MouseEvent<HTMLAnchorElement>) => {
     const href = event.currentTarget.getAttribute('href')
@@ -55,6 +61,20 @@ export function AuthFormCard({
     event.preventDefault()
     window.history.pushState({}, '', href)
     window.dispatchEvent(new PopStateEvent('popstate'))
+  }
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    if (!onSubmit || isSubmitting) {
+      return
+    }
+
+    const formData = new FormData(event.currentTarget)
+    const values = Object.fromEntries(
+      fields.map((field) => [field.name, String(formData.get(field.name) ?? '')]),
+    )
+    await onSubmit(values)
   }
 
   const socialActions = showSocialActions ? (
@@ -72,7 +92,7 @@ export function AuthFormCard({
 
       {socialActionsPosition === 'top' ? socialActions : null}
 
-      <form className="auth-form">
+      <form className="auth-form" onSubmit={handleSubmit} noValidate>
         {fields.map((field) => (
           <TextField
             key={field.id}
@@ -108,8 +128,14 @@ export function AuthFormCard({
           </div>
         ) : null}
 
-        <button type="submit" className="primary-button primary-button--register">
-          <span>{actionLabel}</span>
+        {error ? (
+          <p role="alert" className="form-error">
+            {error}
+          </p>
+        ) : null}
+
+        <button type="submit" className="primary-button primary-button--register" disabled={isSubmitting}>
+          <span>{isSubmitting ? 'Aguarde...' : actionLabel}</span>
           <span aria-hidden="true">→</span>
         </button>
       </form>

@@ -1,4 +1,17 @@
-# React + Vite
+# Frontend React + Vite
+
+O frontend consome a API de autenticação em `/auth/register`, `/auth/login` e
+`/auth/me`. Copie `.env.example` para `.env` quando a API não estiver em
+`http://localhost:3000` e ajuste `VITE_API_URL`.
+
+## Desenvolvimento
+
+```bash
+npm run web:dev
+```
+
+Para validar a integração contra uma API e PostgreSQL reais, suba as migrations
+e a API e execute `npm run web -- test:integration`.
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
