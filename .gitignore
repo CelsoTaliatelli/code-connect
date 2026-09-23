@@ -13,7 +13,10 @@ coverage/
 # Ambiente
 .env
 .env.*
-!.env.example
+**/.env
+**/.env.*
+apps/api/.env.example
+apps/web/.env.example
 *.local
 
 # Logs

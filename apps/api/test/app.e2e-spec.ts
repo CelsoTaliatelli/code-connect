@@ -107,6 +107,48 @@ describe('AppController (e2e)', () => {
       .expect(401);
   });
 
+  it('serves public posts and protects post mutations', async () => {
+    const credentials = {
+      name: 'Ada Lovelace',
+      email: 'ada@example.com',
+      password: 'correct-horse',
+    };
+    await request(app.getHttpServer()).post('/auth/register').send(credentials).expect(201);
+
+    const loginResponse = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({ email: credentials.email, password: credentials.password })
+      .expect(200);
+    const token = loginResponse.body.accessToken as string;
+
+    await request(app.getHttpServer())
+      .post('/posts')
+      .send({ title: 'Full-text no PostgreSQL', content: 'Busque este conteúdo no feed.', thumbnail: 'not-a-url' })
+      .expect(401);
+
+    const createResponse = await request(app.getHttpServer())
+      .post('/posts')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ title: 'Full-text no PostgreSQL', content: 'Busque este conteúdo no feed.' })
+      .expect(201);
+    const postId = createResponse.body.id as string;
+
+    const feedResponse = await request(app.getHttpServer()).get('/posts').expect(200);
+    expect(feedResponse.body.items).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: postId, likedByMe: false }),
+    ]));
+
+    await request(app.getHttpServer())
+      .get('/posts?search=PostgreSQL')
+      .expect(200)
+      .expect((response) => expect(response.body.items[0].id).toBe(postId));
+
+    await request(app.getHttpServer()).post(`/posts/${postId}/likes`).expect(401);
+    await request(app.getHttpServer()).post(`/posts/${postId}/likes`).set('Authorization', `Bearer ${token}`).expect(201);
+    await request(app.getHttpServer()).post(`/posts/${postId}/likes`).set('Authorization', `Bearer ${token}`).expect(409);
+    await request(app.getHttpServer()).post(`/posts/${postId}/comments`).set('Authorization', `Bearer ${token}`).send({ content: 'Excelente post.' }).expect(201);
+  });
+
   afterEach(async () => {
     await app.close();
   });

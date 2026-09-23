@@ -62,7 +62,25 @@ Com `DATABASE_URL` configurada, gere o cliente e aplique as migrations:
 ```bash
 pnpm run db:generate
 pnpm run db:migrate:deploy
+pnpm run db:seed
 ```
+
+O seed cria dois usuários e seis posts, incluindo um post sem thumbnail. As
+credenciais demo são `ada@example.com` / `correct-horse` e `grace@example.com`
+/ `compiler-first`.
+
+## Posts
+
+- `GET /posts?search=termo`: feed público com busca full-text por título,
+  conteúdo e nome do autor.
+- `GET /posts/:id`: detalhe público com comentários e contagens.
+- `POST /posts`: cria um post autenticado.
+- `POST` e `DELETE /posts/:id/likes`: curte ou remove a curtida autenticada.
+- `POST /posts/:id/comments`: adiciona comentário autenticado.
+
+Para executar os comandos no ambiente oficial do projeto, use `docker compose`
+na raiz e rode `docker compose exec app ...`; o PostgreSQL é acessado pelo host
+`postgres` dentro do container.
 
 No desenvolvimento, `pnpm run db:migrate` cria uma nova migration quando o schema mudar. Os dados locais ficam em `.docker/postgres/`, que não é versionado.
 
