@@ -25,6 +25,7 @@ Antes de iniciar a API pela primeira vez, aplique as migrations:
 ```bash
 npm run api -- db:generate
 npm run api -- db:migrate:deploy
+npm run api -- db:seed
 ```
 
 ## 2) 🧪 Acessar o container
@@ -105,6 +106,11 @@ npm run dev
 
 - Frontend (Vite): `http://localhost:5173`
 - Backend (NestJS): `http://localhost:3000`
+
+O feed fica disponível publicamente em `/`. Os detalhes usam `/posts/:id`.
+Visitantes podem ler posts e comentários; login é necessário para criar posts,
+curtir e comentar. Os usuários demo do seed são `ada@example.com` /
+`correct-horse` e `grace@example.com` / `compiler-first`.
 
 > O frontend pode ser ajustado conforme a configuração da aplicação, mas os scripts estão prontos para uso no ambiente Docker.
 
